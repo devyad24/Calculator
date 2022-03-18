@@ -17,7 +17,7 @@ body,html {
     height: 100%;
     justify-content: center;
     align-items: center;
-    background-color: #001845;
+    background-color: #ffffff;
 } 
 .calculator{
     width: 350px;
@@ -30,8 +30,8 @@ body,html {
 }
 .displayscr{
     border:1px solid black;
-    width: 90%;
-    height: 50%;
+    width: 310px;
+    height: 140px;
     margin-top: 15px;
     display: flex;
     justify-content: flex-end;
@@ -57,10 +57,24 @@ body,html {
     border-radius: 20px;
     color: #f8f7ff;
 }
-.answer{
+.operationBtns button:hover{
+    background-color: #001233;
+}
+.display{
     width:100%;
     height: 50%;
     font-size: 10em;
     text-align: right;
     margin-bottom: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+}
+.equals{
+    grid-row: 5/6;
+    grid-column: 3/5;
+}
+.clear{
+    grid-row: 3/5;
+    grid-column: 4/5;
+
 }
