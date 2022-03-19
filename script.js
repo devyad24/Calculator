@@ -26,57 +26,73 @@ const operators = document.querySelectorAll('.operator');
 const equalsTo = document.querySelector('.equals');
 const clearnScr = document.querySelector('.clear');
 
-let firstNumber = 0, secondNumber = 0, answer=0;
+let firstNumber = 0, secondNumber = 0, answer = 0;
 let operator = '';
-let operatorPresent = false;
+let firstOperatorPresent = false;
+let secondOperatorPresent = false;
 let screenCleared = false;
+let flag = 0;
 
 function numberInput() {
-    let flag = 0;
     numbers.forEach((num) => {
-        num.addEventListener('click', (e) => {
-            if (!operatorPresent) {
-                display.textContent += e.target.textContent;
-                firstNumber = display.textContent;
-            } else {
-                if (flag === 0) {
-                    display.textContent = '';
-                    flag++;
-                }
-                display.textContent += e.target.textContent;
-                secondNumber = display.textContent;
-            }
-        })
+        num.addEventListener('click', storeNumbers)
     })
 }
-function operatorInput() {
-    operators.forEach(op => {
-        op.addEventListener('click', (e) => {
-            operator = e.target.textContent;
-            operatorPresent = true;
 
-        })
-    })
+function storeNumbers(numberBtn) {
+    if (!firstOperatorPresent) {
+        display.textContent += numberBtn.target.textContent;
+        firstNumber = display.textContent;
+    } else {
+        if (flag === 0) {
+            display.textContent = '';
+            flag = 1;
+        }
+        display.textContent += numberBtn.target.textContent;
+        secondNumber = display.textContent;
+    }
 }
+
+function operatorInput(targetOperator) {
+    if(operator!==''){
+        getAnswer();
+    }
+    operator = targetOperator.target.textContent;
+    firstOperatorPresent = true;
+}
+
+operators.forEach(op => {
+    op.addEventListener('click', operatorInput)
+})
+function isInteger(n) {
+    return n % 1 === 0;
+ }
 
 function getAnswer() {
-    if(!screenCleared && operatorPresent) firstNumber = answer;
-    equalsTo.addEventListener('click', () => {
-        answer = (operate(operator, firstNumber, secondNumber).toString());
-        display.textContent = answer;
-    });
+    if(isInteger(operate(operator, firstNumber, secondNumber))) answer = operate(operator, firstNumber, secondNumber);
+    else answer = operate(operator, firstNumber, secondNumber).toFixed(2);
+    display.textContent = answer.toString();
+    if (!screenCleared && firstOperatorPresent) {
+        firstNumber = answer;
+        flag = 0;
+    }
 }
 
-function clearDisplay(){
-    clearnScr.addEventListener('click',()=>display.textContent='');
+equalsTo.addEventListener('click', getAnswer);
+
+
+function clearDisplay() {
+    display.textContent = ''
     firstNumber = 0;
     secondNumber = 0;
     operator = '';
-    operatorPresent = false;
+    firstOperatorPresent = false;
     screenCleared = true;
+    flag = 0;
 }
+
+clearnScr.addEventListener('click', clearDisplay);
 
 numberInput();
 operatorInput();
 getAnswer();
-clearDisplay();
