@@ -28,7 +28,7 @@ const clearnScr = document.querySelector('.clear');
 
 let firstNumber = 0, secondNumber = 0, answer = 0;
 let operator = '';
-let firstOperatorPresent = false;
+let operatorPresent = false;
 let secondOperatorPresent = false;
 let screenCleared = false;
 let flag = 0;
@@ -40,7 +40,7 @@ function numberInput() {
 }
 
 function storeNumbers(numberBtn) {
-    if (!firstOperatorPresent) {
+    if (!operatorPresent) {
         display.textContent += numberBtn.target.textContent;
         firstNumber = display.textContent;
     } else {
@@ -58,7 +58,7 @@ function operatorInput(targetOperator) {
         getAnswer();
     }
     operator = targetOperator.target.textContent;
-    firstOperatorPresent = true;
+    operatorPresent = true;
 }
 
 operators.forEach(op => {
@@ -72,7 +72,7 @@ function getAnswer() {
     if(isInteger(operate(operator, firstNumber, secondNumber))) answer = operate(operator, firstNumber, secondNumber);
     else answer = operate(operator, firstNumber, secondNumber).toFixed(2);
     display.textContent = answer.toString();
-    if (!screenCleared && firstOperatorPresent) {
+    if (!screenCleared && operatorPresent) {
         firstNumber = answer;
         flag = 0;
     }
@@ -86,7 +86,7 @@ function clearDisplay() {
     firstNumber = 0;
     secondNumber = 0;
     operator = '';
-    firstOperatorPresent = false;
+    operatorPresent = false;
     screenCleared = true;
     flag = 0;
 }
