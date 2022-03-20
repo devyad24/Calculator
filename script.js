@@ -72,7 +72,7 @@ function getAnswer() {
     if(isInteger(operate(operator, firstNumber, secondNumber))) answer = operate(operator, firstNumber, secondNumber);
     else answer = operate(operator, firstNumber, secondNumber).toFixed(2);
     display.textContent = answer.toString();
-    if (!screenCleared && operatorPresent) {
+    if (operatorPresent) {
         firstNumber = answer;
         flag = 0;
     }
@@ -85,9 +85,9 @@ function clearDisplay() {
     display.textContent = ''
     firstNumber = 0;
     secondNumber = 0;
+    answer = 0;
     operator = '';
     operatorPresent = false;
-    screenCleared = true;
     flag = 0;
 }
 
