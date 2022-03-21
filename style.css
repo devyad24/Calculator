@@ -71,10 +71,10 @@ body,html {
 }
 .equals{
     grid-row: 5/6;
-    grid-column: 3/5;
+    grid-column: 3/4;
 }
 .clear{
-    grid-row: 3/5;
+    grid-row: 4/5;
     grid-column: 4/5;
 
 }

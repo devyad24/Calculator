@@ -4,8 +4,8 @@ const multiply = (x, y) => x * y;
 const divide = (x, y) => x / y;
 
 const operate = (operator, x, y) => {
-    x = parseInt(x);
-    y = parseInt(y);
+    x = parseFloat(x);
+    y = parseFloat(y);
     if (operator === '+') {
         return add(x, y);
     }
@@ -25,6 +25,32 @@ const display = document.querySelector('.display');
 const operators = document.querySelectorAll('.operator');
 const equalsTo = document.querySelector('.equals');
 const clearnScr = document.querySelector('.clear');
+const decimalSign = document.querySelector('.dot');
+const percentage = document.querySelector('.percentage');
+const deleteExpression = document.querySelector('.delete');
+const negateExpression = document.querySelector('.negate');
+
+// negateExpression.addEventListener('click',e=>{
+// })
+
+decimalSign.addEventListener('click',e=>{
+    if(!display.textContent.includes('.')) display.textContent+=e.target.textContent;
+});
+percentage.addEventListener('click',e=>{
+    firstNumber = (parseFloat(display.textContent)/100);
+    firstNumber = Math.round(firstNumber*100)/100;
+    display.textContent = firstNumber.toString();
+})
+deleteExpression.addEventListener('click',e=>{
+    if(parseFloat(display.textContent)===firstNumber){
+        firstNumber = parseFloat(display.textContent.slice(0,-1));
+        display.textContent =  firstNumber.toString();
+    }
+    else{
+        secondNumber = parseFloat(display.textContent.slice(0,-1));
+        display.textContent = secondNumber.toString();
+    }
+})
 
 let firstNumber = 0, secondNumber = 0, answer = 0;
 let operator = '';
@@ -41,6 +67,10 @@ function numberInput() {
 
 function storeNumbers(numberBtn) {
     if (!operatorPresent) {
+        if(screenCleared){
+            display.textContent = '';
+            screenCleared = false;
+        }
         display.textContent += numberBtn.target.textContent;
         firstNumber = display.textContent;
     } else {
@@ -64,13 +94,13 @@ function operatorInput(targetOperator) {
 operators.forEach(op => {
     op.addEventListener('click', operatorInput)
 })
-function isInteger(n) {
-    return n % 1 === 0;
- }
-
+function isZero(num){
+    num = parseFloat(num);
+    return subtract(num,0)===0 ? true : false;
+}
 function getAnswer() {
-    if(isInteger(operate(operator, firstNumber, secondNumber))) answer = operate(operator, firstNumber, secondNumber);
-    else answer = operate(operator, firstNumber, secondNumber).toFixed(2);
+    if(isZero(secondNumber) && operator==='/') answer = 'OOPSIE!';
+    else answer = Math.round(operate(operator, firstNumber, secondNumber)*100)/100; 
     display.textContent = answer.toString();
     if (operatorPresent) {
         firstNumber = answer;
@@ -82,13 +112,14 @@ equalsTo.addEventListener('click', getAnswer);
 
 
 function clearDisplay() {
-    display.textContent = ''
     firstNumber = 0;
     secondNumber = 0;
     answer = 0;
     operator = '';
     operatorPresent = false;
     flag = 0;
+    screenCleared = true;
+    display.textContent = answer;
 }
 
 clearnScr.addEventListener('click', clearDisplay);
