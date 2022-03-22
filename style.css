@@ -2,6 +2,11 @@
     font-family: 'Calculator';
     src: url('Calculator.ttf');
   }
+:root{
+    --operationBtn-color: #8ecae6;
+    --clrBtn-color: #ffffff;
+    --font-color:#001219;
+}
 *{
     margin: 0;
     padding: 0;
@@ -50,14 +55,14 @@ body,html {
     column-gap: 5px;
     
 }
-.operationBtns button{
+button{
     background-color: #4a4e69;
     font-size: 5em;
     border: 1px solid #14213d;
     border-radius: 20px;
     color: #f8f7ff;
 }
-.operationBtns button:hover{
+button:hover{
     background-color: #001233;
 }
 .display{
@@ -77,4 +82,20 @@ body,html {
     grid-row: 4/5;
     grid-column: 4/5;
 
+}
+.operator, .negate, .percentage{
+    background-color: var(--operationBtn-color);
+    color: var(--font-color);
+}
+.operator:hover, .negate:hover, .percentage:hover{
+    color: #ffffff;
+    background-color: #168aad;
+}
+.clear, .equals, .delete{
+    background-color: var(--clrBtn-color);
+    color: var(--font-color);
+}
+.clear:hover, .equals:hover, .delete:hover{
+    color: #ffffff;
+    background-color: #adb5bd;
 }

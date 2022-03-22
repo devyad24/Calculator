@@ -30,44 +30,66 @@ const percentage = document.querySelector('.percentage');
 const deleteExpression = document.querySelector('.delete');
 const negateExpression = document.querySelector('.negate');
 
-// negateExpression.addEventListener('click',e=>{
-// })
-
-decimalSign.addEventListener('click',e=>{
-    if(!display.textContent.includes('.')) display.textContent+=e.target.textContent;
-});
-percentage.addEventListener('click',e=>{
-    firstNumber = (parseFloat(display.textContent)/100);
-    firstNumber = Math.round(firstNumber*100)/100;
-    display.textContent = firstNumber.toString();
-})
-deleteExpression.addEventListener('click',e=>{
-    if(parseFloat(display.textContent)===firstNumber){
-        firstNumber = parseFloat(display.textContent.slice(0,-1));
-        display.textContent =  firstNumber.toString();
-    }
-    else{
-        secondNumber = parseFloat(display.textContent.slice(0,-1));
-        display.textContent = secondNumber.toString();
-    }
-})
-
 let firstNumber = 0, secondNumber = 0, answer = 0;
 let operator = '';
 let operatorPresent = false;
 let secondOperatorPresent = false;
 let screenCleared = false;
 let flag = 0;
+let toggleNegateBtn = false;
+negateExpression.addEventListener('click', e => {
+    if (firstNumber == display.textContent) {
+        firstNumber = (-(parseFloat(display.textContent)));
+        display.textContent = firstNumber.toString();
+    } else if (secondNumber == display.textContent) {
+        secondNumber = (-(parseFloat(display.textContent)));
+        display.textContent = secondNumber.toString();
+    }
+})
 
-function numberInput() {
-    numbers.forEach((num) => {
-        num.addEventListener('click', storeNumbers)
-    })
+decimalSign.addEventListener('click', e => {
+    if (!display.textContent.includes('.')) display.textContent += e.target.textContent;
+});
+percentage.addEventListener('click', e => {
+    firstNumber = (parseFloat(display.textContent) / 100);
+    firstNumber = Math.round(firstNumber * 100) / 100;
+    display.textContent = firstNumber.toString();
+})
+function deleteExprs() {
+    if (display.textContent.length === 1) {
+        if (display.textContent == firstNumber) {
+            firstNumber = 0;
+            display.textContent = firstNumber;
+        } else {
+            secondNumber = 0;
+            display.textContent = secondNumber;
+        }
+    }
+    else if (parseFloat(display.textContent) == firstNumber) {
+
+        firstNumber = parseFloat(display.textContent.slice(0, -1));
+        display.textContent = firstNumber.toString();
+
+
+    }
+    else {
+        secondNumber = parseFloat(display.textContent.slice(0, -1));
+        display.textContent = secondNumber.toString();
+    }
+
+
 }
+deleteExpression.addEventListener('click', deleteExprs);
+
+
+numbers.forEach((num) => {
+    num.addEventListener('click', storeNumbers)
+})
+
 
 function storeNumbers(numberBtn) {
     if (!operatorPresent) {
-        if(screenCleared){
+        if (screenCleared) {
             display.textContent = '';
             screenCleared = false;
         }
@@ -84,7 +106,7 @@ function storeNumbers(numberBtn) {
 }
 
 function operatorInput(targetOperator) {
-    if(operator!==''){
+    if (targetOperator.target.textContent !== '') {
         getAnswer();
     }
     operator = targetOperator.target.textContent;
@@ -94,16 +116,18 @@ function operatorInput(targetOperator) {
 operators.forEach(op => {
     op.addEventListener('click', operatorInput)
 })
-function isZero(num){
+function isZero(num) {
     num = parseFloat(num);
-    return subtract(num,0)===0 ? true : false;
+    return subtract(num, 0) === 0 ? true : false;
 }
 function getAnswer() {
-    if(isZero(secondNumber) && operator==='/') answer = 'OOPSIE!';
-    else answer = Math.round(operate(operator, firstNumber, secondNumber)*100)/100; 
+    if (firstNumber === null || operator === '' || secondNumber === null) return;
+    if (isZero(secondNumber) && operator === '/') answer = 'OOPSIE!';
+    else answer = Math.round(operate(operator, firstNumber, secondNumber) * 100) / 100;
     display.textContent = answer.toString();
     if (operatorPresent) {
         firstNumber = answer;
+        secondNumber = 0;
         flag = 0;
     }
 }
@@ -123,7 +147,3 @@ function clearDisplay() {
 }
 
 clearnScr.addEventListener('click', clearDisplay);
-
-numberInput();
-operatorInput();
-getAnswer();
